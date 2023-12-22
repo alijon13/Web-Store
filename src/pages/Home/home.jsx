@@ -24,7 +24,9 @@ const Home = () => {
 
   const [open, setOpen] = useState()
 
-  const [modalElement, setModalElement] = useState([]);
+
+  let modal = useSelector((store) => store.home.ModalPost);
+  let obj = useSelector((store) => store.home.newImg);
 
 
 
@@ -92,7 +94,7 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="mt-[60px]">
+          <div className="mt-[60px] ">
             <Swiper
               slidesPerView={5}
               spaceBetween={140}
@@ -101,30 +103,44 @@ const Home = () => {
                 clickable: true,
               }}
               modules={[FreeMode, Pagination]}
-              className="mySwiper" x
+              className="mySwiper " x
             >
               {
                 product.map((e) => {
                   return (
-                    <div onClick={() => (dispatch(ModalPostTrue(e)), setModalElement({ e }))} className="">
-                      <SwiperSlide><Sales e={e} id={e.id} img={`${import.meta.env.VITE_APP_FILES_URL}${e.image}`} btn={'-36%'} cost={e.price} prev={'990'} title={e.productName} color={e.color} /></SwiperSlide>
+                    <div className=" p-[10px]" >
+                      <SwiperSlide onClick={() => (dispatch(ModalPostTrue(e)), setModalElement({ e }))}  ><Sales e={e} id={e.id} img={`${import.meta.env.VITE_APP_FILES_URL}${e.image}`} btn={'-36%'} cost={e.price} prev={'4564c'} title={e.productName} color={e.color} /></SwiperSlide>
                     </div>
                   )
                 })
               }
-              {open == true ? (
-                <div className="w-[100%] h-[100vh]  bg-[#00000097] fixed translate-x-[-50%] translate-y-[-50%] top-1/2 left-1/2 ">
-                  <div className="">
-                    <div onClick={() => dispatch(closeModal())}
-                      className="text-[white] cursor-pointer  left-[97%] top-[2%] fixed"><ClearIcon />
-                    </div>
-                  </div>
-                </div>
-              ) : null}
+
 
             </Swiper>
           </div>
-
+          {
+            modal ? <div className="w-[100%] h-[100vh] flex items-center justify-center  bg-[#07040458] z-40 fixed translate-x-[-50%] translate-y-[-50%] top-1/2 left-1/2 ">
+              <div className="w-[65%] flex text-center justify-center gap-[50px]  items-center bg-[white] rounded-2xl h-[70vh]">
+                <div className=" w-[44%] ">
+                  <img className='w-[100%] rounded-lg h-[65vh]  object-cover' src={`${import.meta.env.VITE_APP_FILES_URL}${obj.image}`} alt="" />
+                </div>
+                <div className="w-[47%] -2xl pt-[10px] h-[65vh]">
+                  <h1 className='text-[34px]'>{obj.productName}</h1>
+                  <div className="flex pb-[5px] mt-[20px]  items-center justify-center text-[32px] font-[500] gap-[20px]">
+                    <h1>{obj.price}</h1>
+                    <h1 className='line-through text-[25px]  text-[#9BA1A7]'>4564c.</h1>
+                    <button className='bg-[#ff4444] px-[9px] py-[2px] text-[white] text-[12px] rounded-[8px]'>36%</button>
+                  </div>
+                  <div className="mt-[10px]">
+                    <h1 className='text-[black] text-[20px] font-[500]'>Color<span className='text-[#94979a] pl-[10px]'>{obj.color}</span></h1>
+                  </div>
+                  <div className="mt-[10px]">
+                    <h1></h1>
+                  </div>
+                </div>
+              </div>
+            </div> : null
+          }
 
         </div>
 

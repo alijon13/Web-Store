@@ -11,14 +11,15 @@ const home = createSlice({
         cotegoryById:[],
         product:[],
         cart:[],
-        newImg:null
+        newImg:'',
+        ModalPost:false
     },
     reducers: {
         handleChange: (state, action) => {
             state[action.payload.type] = action.payload.value;
         },
         ModalPostTrue: (state, action) => {
-            state.ModalPost = !false;
+            state.ModalPost = true;
             state.newImg = action.payload;
           },
           closeModal: (state, action) => {
