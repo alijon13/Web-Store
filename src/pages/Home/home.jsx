@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
@@ -8,11 +8,30 @@ import '../../App.css'
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import Cotegory from '../../Component/Cotegory';
 import Sales from '../../Component/Sales';
-
-
+import { getProduct } from '../../api/home/home';
 import { FreeMode } from 'swiper/modules';
+import { useDispatch, useSelector } from 'react-redux';
+import { ModalPostTrue } from '../../reducers/home/home';
+import { closeModal } from '../../reducers/home/home';
 
 const Home = () => {
+
+  const dispatch = useDispatch()
+
+  const product = useSelector((store) => store.home.product);
+
+  const [cart, setCart] = useState()
+
+  const [open, setOpen] = useState()
+
+  const [modalElement, setModalElement] = useState([]);
+
+
+
+  useEffect(() => {
+    dispatch(getProduct())
+  }, [dispatch])
+
   return (
     <div className='wrapper'>
       <div className="w-[73%] m-auto">
@@ -38,6 +57,7 @@ const Home = () => {
           </Swiper>
         </div>
 
+
         <div className="">
           <div className="mb-[40px]">
             <h1 className='text-[24px] font-[700] mt-[65px] '>Популярные категории</h1>
@@ -59,6 +79,10 @@ const Home = () => {
 
         </div>
 
+
+
+
+
         <div className="">
 
           <div className="">
@@ -77,23 +101,38 @@ const Home = () => {
                 clickable: true,
               }}
               modules={[FreeMode, Pagination]}
-              className="mySwiper"
+              className="mySwiper" x
             >
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
-              <SwiperSlide><Sales img={'src/assets/televizor-yasin-smart32-32dyuym-1665653449917-md.webp'} btn={'-36%'} cost={'1219'} prev={'990'} title={'Телевизор Yasin-Smart32, 32дюйм.'} /></SwiperSlide>
+              {
+                product.map((e) => {
+                  return (
+                    <div onClick={() => (dispatch(ModalPostTrue(e)), setModalElement({ e }))} className="">
+                      <SwiperSlide><Sales e={e} id={e.id} img={`${import.meta.env.VITE_APP_FILES_URL}${e.image}`} btn={'-36%'} cost={e.price} prev={'990'} title={e.productName} color={e.color} /></SwiperSlide>
+                    </div>
+                  )
+                })
+              }
+              {open == true ? (
+                <div className="w-[100%] h-[100vh]  bg-[#00000097] fixed translate-x-[-50%] translate-y-[-50%] top-1/2 left-1/2 ">
+                  <div className="">
+                    <div onClick={() => dispatch(closeModal())}
+                      className="text-[white] cursor-pointer  left-[97%] top-[2%] fixed"><ClearIcon />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+
             </Swiper>
           </div>
+
+
         </div>
 
 
 
-        <div className="">
+
+
+        {/* <div className="">
 
           <div className="">
             <div className="flex items-center mt-[75px]">
@@ -194,7 +233,7 @@ const Home = () => {
             </Swiper>
           </div>
 
-        </div>
+        </div> */}
 
 
 

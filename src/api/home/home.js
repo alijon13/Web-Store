@@ -28,4 +28,51 @@ export const getCotegory = createAsyncThunk(
 
 
 
+  export const getProduct = createAsyncThunk(
+    "home/getProduct",
+    async function () {
+      try {
+        const { data } = await axiosRequest.get('/Product/get-products');
+        // console.log(data);
+        return data.data.products;
+      } catch (error) {}
+    }
+  );
+
+
+
+  export const addToCart = createAsyncThunk(
+    "home/addToCart",
+    async function (product,id) {
+      // console.log(1);
+      // console.log(id);
+      try {
+        const { data } = await axiosRequest.post(`add-product-to-cart?id=${id}`,product);
+
+      } catch (error) {}
+    }
+  );
+
+
+
+  export const getCart = createAsyncThunk(
+    "home/getCart",
+    async function () {
+      try {
+        const { data } = await axiosRequest.get('Cart/get-products-from-cart');
+        return data;
+      } catch (error) {}
+    }
+  );
+  
+
+  
+
+
+
+  
+
+
+
+
 
